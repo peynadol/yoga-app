@@ -1,7 +1,7 @@
 import { Pose, Category } from "./types";
 import { getAllCategories } from "./api/categories";
 import { useState, useEffect } from "react";
-import Card from "./Components/Card";
+import Card from "./Components/YogaPoseCard";
 
 function App() {
   const [poses, setPoses] = useState<Pose[]>([]);
