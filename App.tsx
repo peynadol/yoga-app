@@ -7,10 +7,15 @@ import SearchBar from "./Components/SearchBar";
 function App() {
   const [poses, setPoses] = useState<Pose[]>([]);
   const [searchInput, setsearchInput] = useState<string>("");
+  const [filteredPoses, setFilteredPoses] = useState(poses);
 
-  const handleSearch = (e) => {
-    setsearchInput(e.target.value);
-    console.log(searchInput);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setsearchInput(value);
+    const filtered = poses.filter((pose) => 
+    pose.english_name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredPoses(filtered);
   };
 
   useEffect(() => {
@@ -27,11 +32,16 @@ function App() {
     fetchData();
   }, []);
 
+  // populates filteredPoses with unique poses when poses loads
+  useEffect(() => {
+    setFilteredPoses(poses);
+  }, [poses]);
+
   return (
     <>
       <SearchBar value={searchInput} onChange={handleSearch} />
       <div className="pose-list">
-        {poses.map((pose) => (
+        {filteredPoses.map((pose) => (
           <Card key={pose.id} pose={pose} />
         ))}
       </div>
